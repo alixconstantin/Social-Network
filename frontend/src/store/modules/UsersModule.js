@@ -6,7 +6,7 @@ export default {
   state() {
     return {
       userID: 'unknow',
-      count: 2
+      userName:''
 
     }
   },
@@ -17,6 +17,9 @@ export default {
     SET_USER_ID(state, userID) {
       state.userID = userID
     },
+    SET_USER_NAME(state, userName) {
+      state.userName = userName
+    }
 
     /*
     SET_IS_TASK_IN_PROGRESS (state, bool) {

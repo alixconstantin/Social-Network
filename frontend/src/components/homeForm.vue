@@ -35,7 +35,7 @@
 
 
         <form v-if="registering" @submit.prevent="register">
-
+        
          <div class="name">
                 <div class="name_icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20px" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -43,7 +43,7 @@
                 </svg>
                 </div>
                 <input type="name" v-model="name" class="name_input" id="exampleInputName" aria-describedby="emailHelp" placeholder="Enter name">
-            </div>
+            </div> 
     
             <div class="email">
                 <div class="email_icon">
@@ -96,13 +96,14 @@ export default {
   computed: {
     ...mapState({
       userID: (state) => state.users.userID,
+      userName: (state) => state.users.userName
     }),
   },
 
   methods: {
     async login() {
-      const { email, password, name } = this;
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+      const { email, password} = this;
+      const res = await fetch("http://localhost:3000/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -110,39 +111,41 @@ export default {
         body: JSON.stringify({
           email,
           password,
-          name
         }),
       });
       const data = await res.json();
       this.$store.commit("SET_USER_ID", data.userId);
+      this.$store.commit("SET_USER_NAME", data.userName);
       if(this.userID){
         this.$router.push({ path: "/news" });
       } // ! Else { notification error connection }
 
     },
 
+    // REGISTER //
     async register() {
-      const { email, password, name} = this;
-      const res = await fetch("http://localhost:5000/api/auth/signup", {
+      const { name, email, password} = this; 
+      const res = await fetch("http://localhost:3000/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          name,
           email,
-          password,
-          name
+          password
         }),
       });
+
       const data = await res.json();
-      if (data.message != "" && data.message != undefined) {
+       if (data.message != "" && data.message != undefined) {
         alert("Utilisateur Créer !");
         this.registering = false;
       } else {
         alert(
           "problème dans l'enregistrement utilisateur "
         );
-      }
+      } 
     },
   },
 };

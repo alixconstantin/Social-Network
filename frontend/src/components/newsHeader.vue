@@ -1,7 +1,7 @@
 <template>
     <header>
         <img class="logoo" src="../../images/icon-left-font-monochrome-black.svg" alt="">
-        <p class="userName">{{$store.state.users.userID}}</p>
+        <p class="userName">{{$store.state.users.userName}}</p>
     </header>
 </template>
 

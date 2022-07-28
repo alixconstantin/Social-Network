@@ -1,6 +1,29 @@
 <script>
-export default {
+import { mapState } from "vuex";
 
+export default {
+    
+
+computed: {
+    ...mapState({
+      userID: (state) => state.users.userID,
+      userName: (state) => state.users.userName
+    }),
+  },
+
+updated() {
+    if (userName.length < 1) {
+        alert('OULALA')
+    }
+
+},
+  
+
+ /*mounted () {
+    if (this.$store.state.users.userName = ""){
+        this.$router.push({ path: "/news" });
+    }
+ }*/
 }
 </script>
 
