@@ -13,17 +13,18 @@
     
     
     <div class="containerMain">
-        <newsPost/>
+        <newsAddPost/>
     </div>
 </template>
 
 <script>
 import newsHeader from '../components/newsHeader.vue'
-import newsPost from '../components/newsPost.vue'
+import newsAddPost from '../components/newsAddPost.vue'
+
 export default {
     components: {
         newsHeader,
-        newsPost
+        newsAddPost
     }
 }
 </script>

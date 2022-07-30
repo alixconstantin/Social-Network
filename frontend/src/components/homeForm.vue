@@ -83,7 +83,6 @@
 import { mapState } from "vuex";
 
 export default {
-
   data() {
     return {
       name:"",
@@ -92,18 +91,16 @@ export default {
       registering: false,
     };
   },
-
   computed: {
     ...mapState({
       userID: (state) => state.users.userID,
       userName: (state) => state.users.userName
     }),
   },
-
   methods: {
     async login() {
       const { email, password} = this;
-      const res = await fetch("http://localhost:3000/api/auth/login", {
+      const res = await fetch("http://localhost:3080/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -119,13 +116,11 @@ export default {
       if(this.userID){
         this.$router.push({ path: "/news" });
       } // ! Else { notification error connection }
-
     },
-
     // REGISTER //
     async register() {
       const { name, email, password} = this; 
-      const res = await fetch("http://localhost:3000/api/auth/signup", {
+      const res = await fetch("http://localhost:3080/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -136,7 +131,6 @@ export default {
           password
         }),
       });
-
       const data = await res.json();
        if (data.message != "" && data.message != undefined) {
         alert("Utilisateur Créer !");
@@ -162,7 +156,6 @@ $base-color: #4e5166;
   font-family: "Lato";
   z-index: 9999;
 }
-
 .test,
 form {
   height: 388px;
@@ -171,16 +164,13 @@ form {
   justify-content: center;
   align-items: self-end;
 }
-
 //* Inputs
 input {
   background: rgba(250, 245, 245, 0.75);
 }
-
 input:focus {
   outline: none;
 }
-
 .email {
   box-shadow: 0 5px 7px -2px rgb(0, 0, 0);
   display: flex;
@@ -202,7 +192,6 @@ input:focus {
     box-shadow: 0px 0px 5px -2px $base-color;
   }
 }
-
 .name {
   box-shadow: 0 5px 7px -2px rgb(0, 0, 0);
   display: flex;
@@ -224,7 +213,6 @@ input:focus {
     box-shadow: 0px 0px 5px -2px $base-color;
   }
 }
-
 .password {
   box-shadow: 0 5px 7px -2px rgb(0, 0, 0);
   display: flex;
@@ -246,7 +234,6 @@ input:focus {
     box-shadow: 0px 0px 5px -2px $base-color;
   }
 }
-
 //* Button
 button {
   font-family: "Lato";
@@ -260,7 +247,6 @@ button {
   transition: width 1.2s;
   text-shadow: 0 0 7px $base-color;
 }
-
 button:hover {
   background-color: rgba(250, 245, 245, 0.52);
   -ms-transform: scale(1);
@@ -268,7 +254,6 @@ button:hover {
   transform: scale(1);
   width: 287.09px;
 }
-
 //* Text form
 .message {
   font-family: "Leto";
@@ -289,7 +274,6 @@ button:hover {
     align-items: center; //  box-shadow: 0 0 10px #FD2D01;
   }
 }
-
 .message a {
   font-family: "Leto";
   color: white;
@@ -305,12 +289,10 @@ button:hover {
   text-shadow: 0 0 7px #fd2d01;
   text-decoration: underline;
 }
-
 .message a:hover {
   color: white;
   scale: (1.1);
 }
-
 .sv {
   color: linear-gradient(
     to right top,
@@ -330,7 +312,6 @@ button:hover {
   animation-name: scaler;
   animation-iteration-count: infinite;
 }
-
 .group-element {
   width: 100%;
   min-height: 100px;
@@ -346,10 +327,3 @@ button:hover {
   position: absolute;
 }
 </style>
-
-
-
-
-
-
-

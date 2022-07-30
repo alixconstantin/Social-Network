@@ -1,31 +1,54 @@
 <template>
     <div class="postContainer">
     
+        <form  @submit.prevent="post">
+            <div class="postContainer_post">
     
-        <div class="postContainer_post">
+                <div class="postContainer_post_top">
+                    <img src="https://oasys.ch/wp-content/uploads/2019/03/photo-avatar-profil.png" alt="profilPicture">
+                    <p>{{$store.state.users.userName}}</p>
+                </div>
     
-            <div class="postContainer_post_top">
-                <img src="https://oasys.ch/wp-content/uploads/2019/03/photo-avatar-profil.png" alt="profilPicture">
-                <p>{{$store.state.users.userName}}</p>
+                <textarea class="postContainer_post_inputText" type="text" v-model="postText"></textarea>
+    
+                <div class="postContainer_post_bottomInput">
+                    <p>Add a picture url : </p> <input v-model="postUrl" type="text" class="postContainer_post_inputUrl">
+                </div>
+    
+                <button type="submit"> E n v o y e r</button>
             </div>
-    
-            <textarea class="postContainer_post_inputText" type="text"></textarea>
-    
-            <div class="postContainer_post_bottomInput">
-                <p>Add a picture url : </p> <input type="text" class="postContainer_post_inputUrl">
-            </div>
-    
-            <button>Envoyer</button>
-        </div>
-    
+        </form>
     
     </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
 
-}
+    data() {
+        return {
+            postText: "",
+            postUrl: "",
+        };
+    },
+
+         computed: {
+        ...mapState({
+            userID: (state) => state.users.userID,
+            userName: (state) => state.users.userName,
+        })
+         }, 
+
+        methods: {
+
+            async post() {
+                    const { postText, postUrl } = this;
+            },
+        },
+    };
+
 </script>
 
 <style lang="scss" scoped>
@@ -48,15 +71,15 @@ export default {
         margin-top: 160px;
         box-shadow: 0 1px 18px -1px #4e5166;
         @media screen and (max-width: 1060px) {
-            width:600px;
+            width: 600px;
         }
-        @media screen and (max-width:760px) {
+        @media screen and (max-width: 760px) {
             width: 450px;
         }
-        @media screen and (max-width:560px) {
+        @media screen and (max-width: 560px) {
             width: 350px;
         }
-        @media screen and (max-width:360px) {
+        @media screen and (max-width: 360px) {
             width: 250px;
         }
         &_top {
@@ -97,7 +120,7 @@ button {
     font-family: "Lato";
     height: 53px;
     border: none;
-   background-color:white;
+    background-color: white;
     box-shadow: 0 0 10px #4e5166;
     color: #4e5166;
     margin-bottom: -22px;
@@ -105,10 +128,8 @@ button {
     text-shadow: 0 0 7px #4e5166;
     border-radius: 10px;
     margin-bottom: 8px;
-       
-    &:hover{
-     
-        transition:0.5s ease-in-out;
+    &:hover {
+        transition: 0.5s ease-in-out;
     }
 }
 </style>
