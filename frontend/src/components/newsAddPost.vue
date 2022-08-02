@@ -45,6 +45,7 @@ export default {
 
             async post() {
                     const { postText, postUrl } = this;
+                    console.log(this.userID);
             },
         },
     };
