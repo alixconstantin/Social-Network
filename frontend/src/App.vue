@@ -30,6 +30,7 @@ updated() {
 <style>
 #app {
     width: 100%;
+    font-family: 'Lato';
 }
 body {
     margin:0;

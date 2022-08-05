@@ -6,26 +6,26 @@ export default {
   state() {
     return {
       userID: 'unknow',
-      userName:''
-
+      userName:'',
+      userEmail:'',
+      newPost:false
     }
   },
   mutations: {
-    /* SET_TASKS (state, tasks) {
-       state.tasks = tasks
-     },*/
     SET_USER_ID(state, userID) {
       state.userID = userID
     },
     SET_USER_NAME(state, userName) {
       state.userName = userName
+    },
+    SET_USER_MAIL(state, userEmail) {
+      state.userEmail = userEmail
+    },
+    SET_USER_POST(state, bool){
+      state.newPost = bool
     }
-
-    /*
-    SET_IS_TASK_IN_PROGRESS (state, bool) {
-      state.isTaskInProgress = bool
-    }*/
   },
+  
   actions: {
 
   

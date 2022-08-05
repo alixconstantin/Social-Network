@@ -1,17 +1,17 @@
 <template>
     <div class="containerAllPosts">
-
-            <div class="post">
+          <div v-for="item in posts.slice().reverse()" :key="item.id">
+                  <div class="post">
                 <div class="post_top">
                     <img class="post_top_picture" src="https://oasys.ch/wp-content/uploads/2019/03/photo-avatar-profil.png" alt="profilPicture">
-                    <p>{{$store.state.users.userName}}</p>
+                    <p>{{item.userName}}</p>
                 </div>
-                <div class="post_text">Hello my name is Clara</div>
-                <div class="post_picture"></div>
+                <div class="post_text">{{item.postText}}</div>
+                <div  :style="'background-image: url(' + item.postUrl + ')'" class="post_picture"></div>
                 <div class="post_bottom">
 
                   <div class="post_bottom_info">
-                    <img src="../../images/icon-like.png" alt=""> 
+                    <img src="../../images/icon-like.png" alt="like_icon"> 
                     <div class="post_bottom_info_likeNumber">0</div>
                   </div>
                   <div class="post_bottom_options">
@@ -29,15 +29,65 @@
                 </div>
 
             </div>
+          </div>
+          
 
     </div>
 </template>
 
 <script>
-export default {};
+
+import { mapState } from "vuex";
+export default {
+  data() {
+    return {
+      posts: []
+    }
+  },
+  created() {
+     this.fetchAllPosts();
+  },
+  computed: {
+    ...mapState({
+            newPost: (state) => state.users.newPost,
+        })
+  },
+watch: {
+
+  newPost(){
+    console.log('WALLAH')
+  }
+  /*posts(newPosts,oldPosts) {
+   console.log(newPosts);
+   console.log(oldPosts);
+  }*/
+
+},
+
+  methods: {
+   fetchAllPosts() {
+    fetch("http://localhost:3080/api/post/")
+    .then( (resp) => {
+                if(resp.status === 200){
+                    return resp.json();
+                }
+            })
+            .then( (data) => {
+                this.posts = data;
+            })
+            .catch( (error) => {
+                console.log(error);
+            })
+            this.newPost = true;
+            
+   }
+  }
+    
+}
+    
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .containerAllPosts {
   width: 65%;
   // background-color: palegreen;
@@ -50,7 +100,7 @@ export default {};
   background-color: #242526;
   border-radius: 10px;
   box-shadow: 0 1px 18px -1px #4e5166;
-  margin-top:85px;
+  margin-top: 85px;
   &_top {
     width: 100%;
     height: 100px;
@@ -75,7 +125,7 @@ export default {};
     // background-color: burlywood;
   }
   &_picture {
-    background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png");
+    // background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png");
     width: 100%;
     height: 500px;
     background-size: cover;
@@ -101,7 +151,7 @@ export default {};
       }
     }
     &_options {
-     // background-color: red;
+      // background-color: red;
       width: 95%;
       height: 53px;
       margin-left: 2.5%;
@@ -116,7 +166,7 @@ export default {};
         justify-content: center;
         align-items: center;
         color: white;
-        border-right:1px solid white;
+        border-right: 1px solid white;
         &:hover {
           background-color: #4e5166;
           text-shadow: 0 0 7px #fd2d01;
@@ -138,9 +188,9 @@ export default {};
     }
   }
 }
-.h-6{
-  width:20px;
-  margin-right:15px;
+.h-6 {
+  width: 20px;
+  margin-right: 15px;
 }
 </style>
 

@@ -14,7 +14,7 @@
     
     <div class="containerMain">
         <newsAddPost/>
-        <newsAllPost/>
+        <newsAllPost :key="componentKey"/>
     </div>
 </template>
 
@@ -22,13 +22,37 @@
 import newsHeader from "../components/newsHeader.vue";
 import newsAddPost from "../components/newsAddPost.vue";
 import newsAllPost from "../components/newsAllPost.vue";
+import { mapState } from "vuex";
 
 export default {
+data() {
+  return {
+     componentKey: 0,
+  }
+},
+methods: {
+  forceRerender() {
+      this.componentKey += 1;
+    }
+},
+
   components: {
     newsHeader,
     newsAddPost,
     newsAllPost,
   },
+  mounted () {
+    if (this.userName == "" || this.userName == "unknow") {
+     this.$router.push({ path: "/" });
+    }
+  },
+   computed: {
+        ...mapState({
+            userID: (state) => state.users.userID,
+            userName: (state) => state.users.userName,
+            userMail: (state) => state.users.userMail,
+        })
+         },
 };
 </script>
 

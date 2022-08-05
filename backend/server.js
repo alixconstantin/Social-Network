@@ -8,6 +8,8 @@ const morgan = require("morgan");
 app.use(morgan("dev")); 
 
 const userRoutes = require('./routes/user');
+const postRoutes = require('./routes/post');
+
 
 
 mongoose.connect('mongodb+srv://alix:raku3louis@cluster0.buobr.mongodb.net/test?retryWrites=true&w=majority', {
@@ -29,6 +31,8 @@ app.use((req, res, next) => {
   });
 
 app.use('/api/auth', userRoutes);
+app.use('/api/post', postRoutes);
+
 
 
 app.listen(port);

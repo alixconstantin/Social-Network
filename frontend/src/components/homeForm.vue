@@ -113,6 +113,7 @@ export default {
       const data = await res.json();
       this.$store.commit("SET_USER_ID", data.userId);
       this.$store.commit("SET_USER_NAME", data.userName);
+      this.$store.commit("SET_USER_MAIL", data.userMail);
       if(this.userID){
         this.$router.push({ path: "/news" });
       } // ! Else { notification error connection }
@@ -120,6 +121,7 @@ export default {
     // REGISTER //
     async register() {
       const { name, email, password} = this; 
+      let postOwner = []
       const res = await fetch("http://localhost:3080/api/auth/signup", {
         method: "POST",
         headers: {
@@ -128,7 +130,8 @@ export default {
         body: JSON.stringify({
           name,
           email,
-          password
+          password,
+          postOwner
         }),
       });
       const data = await res.json();
