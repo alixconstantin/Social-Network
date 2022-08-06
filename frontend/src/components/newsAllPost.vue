@@ -3,8 +3,16 @@
           <div v-for="item in posts.slice().reverse()" :key="item.id">
                   <div class="post">
                 <div class="post_top">
+
+                  <div class="post_top_left">
                     <img class="post_top_picture" src="https://oasys.ch/wp-content/uploads/2019/03/photo-avatar-profil.png" alt="profilPicture">
                     <p>{{item.userName}}</p>
+                  </div>  
+                  <div v-if="isAdmin || this.postOwner.includes(item.postId)" class="post_top_right"> 
+                    <button class="post_top_right_modify">Modifier</button>
+                    <button class="post_top_right_delete">Supprimer</button>
+                  </div>
+
                 </div>
                 <div class="post_text">{{item.postText}}</div>
                 <div  :style="'background-image: url(' + item.postUrl + ')'" class="post_picture"></div>
@@ -36,7 +44,7 @@
 </template>
 
 <script>
-
+// || this.postOwner.include(item.userId)
 import { mapState } from "vuex";
 export default {
   data() {
@@ -50,17 +58,11 @@ export default {
   computed: {
     ...mapState({
             newPost: (state) => state.users.newPost,
+            isAdmin: (state) => state.users.isAdmin,
+            postOwner: (state) => state.users.postOwner
         })
   },
 watch: {
-
-  newPost(){
-    console.log('WALLAH')
-  }
-  /*posts(newPosts,oldPosts) {
-   console.log(newPosts);
-   console.log(oldPosts);
-  }*/
 
 },
 
@@ -74,17 +76,21 @@ watch: {
             })
             .then( (data) => {
                 this.posts = data;
+                console.log(this.posts);
             })
             .catch( (error) => {
                 console.log(error);
             })
             this.newPost = true;
             
+   },
+   isOwner(postId){
+   // if(this.postOwner)
    }
   }
     
 }
-    
+
 </script>
 
 <style lang="scss">
@@ -106,8 +112,36 @@ watch: {
     height: 100px;
     // background-color: beige;
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &_left{
+      display: flex;
     justify-content: flex-start;
     align-items: center;
+    }
+    &_right{
+      button{
+        margin-right:25px;
+            border: none;
+            height:35px;
+            width:100px;
+    box-shadow: 0 0 10px #4e5166;
+        border-radius: 10px;
+        font-weight: bold;
+      }
+      &_modify{
+        background-image: linear-gradient(to right top, #fdff66, #faea50, #f6d43b, #f1bf27, #eba912);
+        &:hover{
+          background-image:#eba912;
+        }
+      }
+      &_delete{
+        background-image: linear-gradient(to right top, #ff6671, #ff575c, #ff4945, #ff3a2b, #fd2d01);
+        &:hover{
+          background-color:#fd2d01;
+        }
+      }
+    }
     p {
       margin-left: 20px;
       color: white;

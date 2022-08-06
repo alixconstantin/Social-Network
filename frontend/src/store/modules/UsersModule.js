@@ -8,7 +8,8 @@ export default {
       userID: 'unknow',
       userName:'',
       userEmail:'',
-      newPost:false
+      isAdmin:false,
+      postOwner:[]
     }
   },
   mutations: {
@@ -23,6 +24,12 @@ export default {
     },
     SET_USER_POST(state, bool){
       state.newPost = bool
+    },
+    SET_USER_ADMIN(state, bool){
+      state.isAdmin = bool
+    },
+    SET_USER_POSTOWNER(state, array){
+      state.postOwner = array
     }
   },
   

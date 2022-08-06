@@ -114,6 +114,8 @@ export default {
       this.$store.commit("SET_USER_ID", data.userId);
       this.$store.commit("SET_USER_NAME", data.userName);
       this.$store.commit("SET_USER_MAIL", data.userMail);
+      this.$store.commit("SET_USER_ADMIN", data.isAdmin);
+      this.$store.commit("SET_USER_POSTOWNER", data.postOwner);  
       if(this.userID){
         this.$router.push({ path: "/news" });
       } // ! Else { notification error connection }

@@ -9,7 +9,8 @@ exports.signup = (req, res, next) => {
       const user = new User({
         name: req.body.name,
         email: req.body.email,
-        password: hash
+        password: hash,
+        isAdmin: false
       });
       user.save()
         .then(() => res.status(201).json({
@@ -45,6 +46,8 @@ exports.login = (req, res, next) => {
           res.status(200).json({
             userName: user.name,
             userId: user._id,
+            isAdmin: user.isAdmin,
+            postOwner: user.postOwner,
             token: jwt.sign({
                 userId: user._id
               },

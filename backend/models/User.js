@@ -6,6 +6,7 @@ const userSchema = mongoose.Schema({
   email: { type: String, required: true, unique: true }, //* unique = true, pour éviter de s'inscrire plusieurs fois avec la même adresse mail. 
   password: { type: String, required: true },
   postOwner: { type: Array, required: true },
+  isAdmin: { type: Boolean, required: true },
 });
 
 userSchema.plugin(uniqueValidator); // protection pour éviter plusieurs utilisateurs avec la même adresse mail

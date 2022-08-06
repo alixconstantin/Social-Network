@@ -38,7 +38,7 @@ export default {
     ...mapState({
       userID: (state) => state.users.userID,
       userName: (state) => state.users.userName,
-      userMail: (state) => state.users.userMail,
+      postOwner: (state) => state.users.postOwner
     }),
   },
 
@@ -65,6 +65,7 @@ export default {
           post,
         }),
       });
+      this.postOwner.push(post.postId);
       alert("Post Créer");
       this.forceRerender();
         this.postText=''
