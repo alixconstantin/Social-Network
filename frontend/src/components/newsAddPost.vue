@@ -9,7 +9,7 @@
                     <p>{{$store.state.users.userName}}</p>
                 </div>
     
-                <textarea class="postContainer_post_inputText" type="text" v-model="postText"></textarea>
+                <textarea class="postContainer_post_inputText"  type="text" v-model="postText"></textarea>
     
                 <div class="postContainer_post_bottomInput">
                     <p>Add a picture url : </p> <input v-model="postUrl" type="text" class="postContainer_post_inputUrl">
@@ -38,7 +38,7 @@ export default {
     ...mapState({
       userID: (state) => state.users.userID,
       userName: (state) => state.users.userName,
-      postOwner: (state) => state.users.postOwner
+      postOwner: (state) => state.users.postOwner,
     }),
   },
 
@@ -68,8 +68,8 @@ export default {
       this.postOwner.push(post.postId);
       alert("Post Créer");
       this.forceRerender();
-        this.postText=''
-        this.postUrl=''
+      this.postText = "";
+      this.postUrl = "";
     },
 
     forceRerender() {
@@ -87,6 +87,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: -12px;
   &_post {
     border-radius: 10px;
     background-color: #242526;
@@ -98,6 +99,7 @@ export default {
     justify-content: space-around;
     margin-top: 160px;
     box-shadow: 0 1px 18px -1px #4e5166;
+    margin-top: -120px;
     @media screen and (max-width: 1060px) {
       width: 600px;
     }
@@ -126,18 +128,38 @@ export default {
       border-radius: 10px;
       display: flex;
       align-items: flex-start;
+      resize: none;
+      background-color: #4e5166;
+      border: none;
+      border-radius: 10px;
+      border:0;outline:0;
+      box-shadow: 0 0 10px #4e5166;
+      padding:15px;
+      &:focus{
+        outline:none!important;
+      }
     }
     &_bottomInput {
       width: 100%;
       display: flex;
     }
     &_inputUrl {
-      width: 300px;
+      width: 340px;
       margin-left: 20px;
+      background-color: #4E5166;
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #4e5166;
+      &:focus{
+        border:red;
+      }
     }
+    
   }
 }
 
+input {border:0;outline:0;}
+input:focus {outline:none!important;}
 img {
   width: 60px;
   border-radius: 50%;
@@ -148,7 +170,14 @@ button {
   font-family: "Lato";
   height: 53px;
   border: none;
-  background-color: white;
+  background-image: linear-gradient(
+    to right top,
+    #e9e9e9,
+    #e2ebf3,
+    #d2f0f4,
+    #cef4e3,
+    #e4f1c9
+  );
   box-shadow: 0 0 10px #4e5166;
   color: #4e5166;
   margin-bottom: -22px;
@@ -157,7 +186,7 @@ button {
   border-radius: 10px;
   margin-bottom: 8px;
   &:hover {
-    transition: 0.5s ease-in-out;
+    color: white;
   }
 }
 </style>

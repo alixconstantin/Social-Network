@@ -9,6 +9,7 @@ import store from './store'
 
 const HomePage = () => import('./pages/HomePage.vue')
 const NewsPage = () => import('./pages/NewsPage.vue')
+const UpdatePostPage = () => import('./pages/UpdatePostPage.vue')
 
 const router = VueRouter.createRouter({
   history: VueRouter.createWebHistory(),
@@ -23,6 +24,11 @@ const router = VueRouter.createRouter({
         path: '/news',
         name: 'News',
         component: NewsPage
+    },
+    {
+        path: '/news/:postId',
+        name:'UpdatePost',
+        component: UpdatePostPage
     }
 ]
 })

@@ -1,6 +1,7 @@
 <template>
     <div class="containerAllPosts">
           <div v-for="item in posts.slice().reverse()" :key="item.id">
+
                   <div class="post">
                 <div class="post_top">
 
@@ -9,23 +10,23 @@
                     <p>{{item.userName}}</p>
                   </div>  
                   <div v-if="isAdmin || this.postOwner.includes(item.postId)" class="post_top_right"> 
-                    <button class="post_top_right_modify">Modifier</button>
-                    <button class="post_top_right_delete">Supprimer</button>
+                    <button @click="Modifications(item.postId)" class="post_top_right_modify">Modifier</button>
+                    <button @click=deletePost(item.postId) class="post_top_right_delete">Supprimer</button>
                   </div>
 
                 </div>
                 <div class="post_text">{{item.postText}}</div>
-                <div  :style="'background-image: url(' + item.postUrl + ')'" class="post_picture"></div>
+                <div :style="'background-image: url(' + item.postUrl + ')'" class="post_picture"></div>
                 <div class="post_bottom">
 
                   <div class="post_bottom_info">
-                    <img src="../../images/icon-like.png" alt="like_icon"> 
-                    <div class="post_bottom_info_likeNumber">0</div>
+                    <img src="../../images/icons8-like-25.png" alt="like_icon"> 
+                    <div class="post_bottom_info_likeNumber">{{showLike(item.likes)}}</div>
                   </div>
                   <div class="post_bottom_options">
 
 
-                    <div class="post_bottom_options_like"> <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <div class="post_bottom_options_like" @click="likePost(userID, item.postId)"> <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
   <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
 </svg>J ' a i m e</div>
                     <div class="post_bottom_options_comment"> <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -37,6 +38,7 @@
                 </div>
 
             </div>
+
           </div>
           
 
@@ -44,60 +46,102 @@
 </template>
 
 <script>
-// || this.postOwner.include(item.userId)
 import { mapState } from "vuex";
 export default {
   data() {
     return {
-      posts: []
-    }
+      posts: [],
+    };
   },
   created() {
-     this.fetchAllPosts();
+    this.fetchAllPosts();
   },
   computed: {
     ...mapState({
-            newPost: (state) => state.users.newPost,
-            isAdmin: (state) => state.users.isAdmin,
-            postOwner: (state) => state.users.postOwner
-        })
+      newPost: (state) => state.users.newPost,
+      isAdmin: (state) => state.users.isAdmin,
+      postOwner: (state) => state.users.postOwner,
+      userID: (state) => state.users.userID,
+    }),
   },
-watch: {
-
-},
 
   methods: {
-   fetchAllPosts() {
-    fetch("http://localhost:3080/api/post/")
-    .then( (resp) => {
-                if(resp.status === 200){
-                    return resp.json();
-                }
-            })
-            .then( (data) => {
-                this.posts = data;
-                console.log(this.posts);
-            })
-            .catch( (error) => {
-                console.log(error);
-            })
-            this.newPost = true;
-            
-   },
-   isOwner(postId){
-   // if(this.postOwner)
-   }
-  }
-    
-}
-
+    fetchAllPosts() {
+      fetch("http://localhost:3080/api/post/")
+        .then((resp) => {
+          if (resp.status === 200) {
+            return resp.json();
+          }
+        })
+        .then((data) => {
+          this.posts = data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    deletePost(postId) {
+      fetch(`http://localhost:3080/api/post/delete/${postId}`, {
+        method: "DELETE",
+      })
+        .then((resp) => {
+          if (resp.status === 200) {
+            return resp.json();
+          }
+        })
+        .then(() => {
+          this.forceRerender();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    forceRerender() {
+      this.$parent.forceRerender();
+    },
+    Modifications(postId) {
+      this.$router.push({ path: `/news/${postId}` });
+    },
+    textExist(text) {
+      if (text.length == 0) {
+        return false;
+      }
+    },
+    likePost(userID, postID) {
+      fetch(`http://localhost:3080/api/post/like/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userID,
+          postID,
+        }),
+      })
+        .then((resp) => {
+          if (resp.status === 200) {
+            return resp.json();
+          }
+        })
+        .then((data) => {
+          console.log(data);
+          this.forceRerender();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    showLike(test) {
+      let allLikes = [...new Set(test)];
+      return allLikes.length;
+    },
+  },
+};
 </script>
 
 <style lang="scss">
 .containerAllPosts {
   width: 65%;
-  // background-color: palegreen;
-  margin-top: 150px;
   height: auto;
 }
 
@@ -110,35 +154,50 @@ watch: {
   &_top {
     width: 100%;
     height: 100px;
-    // background-color: beige;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    &_left{
+    &_left {
       display: flex;
-    justify-content: flex-start;
-    align-items: center;
+      justify-content: flex-start;
+      align-items: center;
     }
-    &_right{
-      button{
-        margin-right:25px;
-            border: none;
-            height:35px;
-            width:100px;
-    box-shadow: 0 0 10px #4e5166;
+    &_right {
+      button {
+        margin-right: 25px;
+        border: none;
+        height: 35px;
+        width: 100px;
+        box-shadow: 0 0 10px #4e5166;
         border-radius: 10px;
         font-weight: bold;
       }
-      &_modify{
-        background-image: linear-gradient(to right top, #fdff66, #faea50, #f6d43b, #f1bf27, #eba912);
-        &:hover{
-          background-image:#eba912;
+      &_modify {
+        background-image: linear-gradient(
+          to right top,
+          #fdff66,
+          #faea50,
+          #f6d43b,
+          #f1bf27,
+          #eba912
+        );
+        &:hover {
+          color: whitesmoke;
+          box-shadow: 0 0 10px #4e5166;
         }
       }
-      &_delete{
-        background-image: linear-gradient(to right top, #ff6671, #ff575c, #ff4945, #ff3a2b, #fd2d01);
-        &:hover{
-          background-color:#fd2d01;
+      &_delete {
+        background-image: linear-gradient(
+          to right top,
+          #ff6671,
+          #ff575c,
+          #ff4945,
+          #ff3a2b,
+          #fd2d01
+        );
+        &:hover {
+          color: whitesmoke;
+          box-shadow: 0 0 10px #4e5166;
         }
       }
     }
@@ -156,25 +215,22 @@ watch: {
     width: 95%;
     margin-left: 20px;
     color: white;
-    // background-color: burlywood;
   }
   &_picture {
-    // background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png");
     width: 100%;
-    height: 500px;
+    height: 400px;
     background-size: cover;
     margin-top: 15px;
   }
   &_bottom {
     width: 100%;
     height: 100px;
-    // background-color: burlywood;
     &_info {
       width: 100%;
       height: 35%;
       display: flex;
       img {
-        margin-left: 2.5%;
+        margin-left: 1.5%;
         margin-top: 10px;
       }
       &_likeNumber {
@@ -185,29 +241,26 @@ watch: {
       }
     }
     &_options {
-      // background-color: red;
-      width: 95%;
+      width: 100%;
       height: 53px;
-      margin-left: 2.5%;
-      border-top: 1px solid white;
+      border-top: 1px solid #4e5166;
       margin-top: 10px;
       display: flex;
       &_like {
-        //background-color: plum;
         height: 100%;
         width: 50%;
         display: flex;
         justify-content: center;
         align-items: center;
         color: white;
-        border-right: 1px solid white;
+        border-right: 1px solid #4e5166;
         &:hover {
           background-color: #4e5166;
           text-shadow: 0 0 7px #fd2d01;
+          border-radius: 0 0 0 10px;
         }
       }
       &_comment {
-        //background-color: peru;
         height: 100%;
         width: 50%;
         display: flex;
@@ -217,6 +270,7 @@ watch: {
         &:hover {
           background-color: #4e5166;
           text-shadow: 0 0 7px #fd2d01;
+          border-radius: 0 0 10px 0;
         }
       }
     }

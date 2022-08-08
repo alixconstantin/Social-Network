@@ -14,11 +14,11 @@ updated() {
     }
 },
   
- /*mounted () {
+ mounted () {
     if (this.$store.state.users.userName = ""){
         this.$router.push({ path: "/news" });
     }
- }*/
+ }
 }
 </script>
 
@@ -30,6 +30,7 @@ updated() {
 <style>
 #app {
     width: 100%;
+    height: 100%;
     font-family: 'Lato';
 }
 body {
