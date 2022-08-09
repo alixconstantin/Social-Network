@@ -9,9 +9,15 @@ const postCtrl = require('../controllers/post');
 
 router.get('/', postCtrl.getAllPosts);
 
-router.get('/:id', postCtrl.getOnePost);
+ router.post('/like', postCtrl.likeAPost);
 
 router.post('/', multer, postCtrl.createPost);
+
+router.delete('/delete/:id', postCtrl.deletePost);
+
+router.put('/:id', postCtrl.updatePost);
+
+// router.delete('/delete/:id', postCtrl.deletePost);
 
 /*
 router.post('/:id/like', auth, postCtrl.likePost); // Actualy commented, need the Ctrl for no making bugs
