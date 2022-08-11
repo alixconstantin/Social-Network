@@ -23,7 +23,6 @@ exports.getOnePost = (req, res, next) => {
     }));
 };
 
-
 exports.createPost = (req, res, next) => {
   let newPostContent = req.body.post
   const newPost = new post({
