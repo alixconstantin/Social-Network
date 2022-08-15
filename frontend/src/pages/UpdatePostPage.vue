@@ -15,7 +15,9 @@
                 <textarea class="postContainer_post_inputText" type="text" v-model="postText"></textarea>
     
                 <div class="postContainer_post_bottomInput">
-                    <p>Add a picture url : </p> <input v-model="postUrl" type="text" class="postContainer_post_inputUrl">
+                    <label>Charger une image : 
+                    <input type="file" ref="file" @change="handleFileUpload()"/>
+                  </label>  
                 </div>
                 <div class="buttonsContainer">
                 <button  type="submit"> S a u v e g a r d e r</button>
@@ -31,13 +33,6 @@
     
     
     <div class="page-bg"></div>
-    <!-- 
-    <div class="animation-wrapper">
-        <div class="particle particle-1"></div>
-        <div class="particle particle-2"></div>
-        <div class="particle particle-3"></div>
-        <div class="particle particle-4"></div>
-    </div>-->
     
 
 </template>
@@ -62,6 +57,7 @@ export default {
         const { postText, postUrl } = this;
         let userId = this.userID;
         let userName = this.userName;
+
          let post = {
         userId: userId,
         postId: postId,
@@ -69,17 +65,29 @@ export default {
         postUrl: postUrl,
         postText: postText,
       };
+
+      const formData = new FormData();
+      formData.append('image', this.file);
+      formData.append('userId', post.userId);
+      formData.append('postId', post.postId);
+      formData.append('userName', post.userName);
+      formData.append('postUrl', post.postUrl);
+      formData.append('postText', post.postText);
+
+
       const res = await fetch("http://localhost:3080/api/post/" + postId, {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          post,
-        }),
+        body: 
+          formData
+       ,
       });
       this.$router.push({ path: "/news" });
-    }
+    },
+     handleFileUpload(){
+     const file = this.$refs.file.files[0];
+     this.file = file;
+     console.log(this.file)
+}
   },
 
   components: {

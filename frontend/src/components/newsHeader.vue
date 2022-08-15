@@ -69,7 +69,7 @@ header {
   align-items: center;
   position: fixed;
   top: 0;
-  opacity: 0.8;
+  // opacity: 0.8;
   z-index: 100;
 }
 
@@ -103,6 +103,7 @@ header {
 
 .h-6 {
 width: 35px;
+color:#4e5166;
 &:hover{
   color:red;
 }

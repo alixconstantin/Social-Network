@@ -1,7 +1,7 @@
 <template>
     <div class="postContainer">
     
-        <form  @submit.prevent="post">
+        <form  @submit.prevent="post" enctype="multipart/form-data">
             <div class="postContainer_post">
     
                 <div class="postContainer_post_top">
@@ -10,10 +10,14 @@
                 </div>
     
                 <textarea class="postContainer_post_inputText"  type="text" v-model="postText"></textarea>
-    
+          <!--
                 <div class="postContainer_post_bottomInput">
                     <p>Add a picture url : </p> <input v-model="postUrl" type="text" class="postContainer_post_inputUrl">
-                </div>
+                </div> -->
+
+                      <label>Charger une image : 
+                    <input type="file" ref="file" @change="handleFileUpload()"/>
+            </label>
     
                 <button @click="clearInputs" type="submit"> E n v o y e r</button>
             </div>
@@ -31,6 +35,7 @@ export default {
     return {
       postText: "",
       postUrl: "",
+      file: "",
     };
   },
 
@@ -48,23 +53,29 @@ export default {
       let postId = uuid();
       let userId = this.userID;
       let userName = this.userName;
-
       let post = {
         userId: userId,
         postId: postId,
         userName: userName,
         postUrl: postUrl,
         postText: postText,
+        imageName: this.file.name,
       };
-      const res = await fetch("http://localhost:3080/api/post/", {
+
+      const formData = new FormData();
+      formData.append("image", this.file);
+      formData.append("userId", post.userId);
+      formData.append("postId", post.postId);
+      formData.append("userName", post.userName);
+      formData.append("postUrl", post.postUrl);
+      formData.append("postText", post.postText);
+      formData.append("imageName", post.imageName);
+
+      const res = await fetch("http://localhost:3080/api/post", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          post,
-        }),
+        body: formData,
       });
+
       this.postOwner.push(post.postId);
       alert("Post Créer");
       this.forceRerender();
@@ -74,6 +85,12 @@ export default {
 
     forceRerender() {
       this.$parent.forceRerender();
+    },
+
+    handleFileUpload() {
+      const file = this.$refs.file.files[0];
+      this.file = file;
+      console.log(this.file);
     },
   },
 };
@@ -132,11 +149,12 @@ export default {
       background-color: #4e5166;
       border: none;
       border-radius: 10px;
-      border:0;outline:0;
+      border: 0;
+      outline: 0;
       box-shadow: 0 0 10px #4e5166;
-      padding:15px;
-      &:focus{
-        outline:none!important;
+      padding: 15px;
+      &:focus {
+        outline: none !important;
       }
     }
     &_bottomInput {
@@ -146,20 +164,24 @@ export default {
     &_inputUrl {
       width: 340px;
       margin-left: 20px;
-      background-color: #4E5166;
+      background-color: #4e5166;
       border: none;
       border-radius: 10px;
       box-shadow: 0 0 10px #4e5166;
-      &:focus{
-        border:red;
+      &:focus {
+        border: red;
       }
     }
-    
   }
 }
 
-input {border:0;outline:0;}
-input:focus {outline:none!important;}
+input {
+  border: 0;
+  outline: 0;
+}
+input:focus {
+  outline: none !important;
+}
 img {
   width: 60px;
   border-radius: 50%;

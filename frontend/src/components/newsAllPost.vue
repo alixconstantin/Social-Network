@@ -12,11 +12,15 @@
                   <div v-if="isAdmin || this.postOwner.includes(item.postId)" class="post_top_right"> 
                     <button @click="Modifications(item.postId)" class="post_top_right_modify">Modifier</button>
                     <button @click=deletePost(item.postId) class="post_top_right_delete">Supprimer</button>
+                    
                   </div>
 
                 </div>
                 <div class="post_text">{{item.postText}}</div>
-                <div :style="'background-image: url(' + item.postUrl + ')'" class="post_picture"></div>
+
+                <!-- <div :style="'background-image: url(' + item.postUrl + ')'" class="post_picture"></div>-->
+                <img :src="item.imageUrl" alt="" class="post_picture">
+
                 <div class="post_bottom">
 
                   <div class="post_bottom_info">
@@ -139,7 +143,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped="true">
 .containerAllPosts {
   width: 65%;
   height: auto;
@@ -218,9 +222,11 @@ export default {
   }
   &_picture {
     width: 100%;
-    height: 400px;
+    max-height: 450px;
+    object-fit: cover;
     background-size: cover;
     margin-top: 15px;
+  
   }
   &_bottom {
     width: 100%;

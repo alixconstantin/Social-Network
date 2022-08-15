@@ -6,6 +6,7 @@ const postSchema = mongoose.Schema({
   userName: { type: String, required: false},
   postUrl: { type: String, required: false },
   postText: {type: String, required: false },
+  imageUrl: { type: String, required: false},
   userEmail: { type: String, required: false},
   comments: { type: String, required: false},
   likes: { type: Array, required: false },

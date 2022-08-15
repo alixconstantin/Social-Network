@@ -30,6 +30,10 @@ app.use((req, res, next) => {
     next();
   });
 
+  app.use(express.static('images'));
+  app.use(express.static('backend'));
+
+
 app.use('/api/auth', userRoutes);
 app.use('/api/post', postRoutes);
 
