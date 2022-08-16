@@ -4,7 +4,7 @@ Faire npm install pour télécharger l'ensemble des dépendances du projet depui
 
 Puis diviser le terminal en deux partie : 
 
-1. cd backend -> npm run serv
+1. cd backend -> npm run start
 
-2. cd frontend -> npm run start
+2. cd frontend -> npm run dev
 
